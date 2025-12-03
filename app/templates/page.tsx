@@ -28,7 +28,7 @@ export default function TemplatesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Global SMS Templates</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">Master Templates</h1>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
@@ -55,6 +55,9 @@ export default function TemplatesPage() {
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Last Updated
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -112,6 +115,14 @@ export default function TemplatesPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(template.updatedAt).toLocaleDateString()}
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <Link
+                      href={`/templates/${template.id}/edit`}
+                      className="text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      Edit
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -121,7 +132,7 @@ export default function TemplatesPage() {
 
       <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
         <p className="text-sm text-blue-800">
-          <strong>Note:</strong> These are global templates. Organizations can override these
+          <strong>Note:</strong> These are master templates. Organizations can override these
           templates with custom copy. To view or edit overrides, go to an organization's detail
           page.
         </p>
