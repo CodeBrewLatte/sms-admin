@@ -128,12 +128,12 @@ export default function OrganizationDetailPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6 flex justify-between items-start">
         <div>
-          <Link
-            href="/orgs"
-            className="text-sm text-blue-600 hover:text-blue-800 mb-2 inline-block"
-          >
-            ← Back to Organizations
-          </Link>
+        <Link
+          href="/orgs"
+          className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 mb-2 inline-block"
+        >
+          ← Back to Organizations
+        </Link>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{org.name}</h1>
         </div>
         <HealthScore
@@ -157,13 +157,13 @@ export default function OrganizationDetailPage() {
             <p className="text-lg font-medium text-gray-900 dark:text-white">{org.country}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">SMS Enabled</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">SMS Enabled</p>
             <div className="flex items-center space-x-3 mt-1">
               <span
                 className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                   org.smsEnabled
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                    : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                 }`}
               >
                 {org.smsEnabled ? "Enabled" : "Disabled"}
@@ -171,19 +171,19 @@ export default function OrganizationDetailPage() {
               <button
                 onClick={handleToggleSms}
                 disabled={togglingSms}
-                className="text-sm text-blue-600 hover:text-blue-800 disabled:opacity-50"
+                className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 disabled:opacity-50"
               >
                 {togglingSms ? "Updating..." : org.smsEnabled ? "Disable" : "Enable"}
               </button>
             </div>
           </div>
           <div>
-            <p className="text-sm text-gray-500">SMS Ready</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">SMS Ready</p>
             <span
               className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full mt-1 ${
                 org.smsReady
-                  ? "bg-blue-100 text-blue-800"
-                  : "bg-yellow-100 text-yellow-800"
+                  ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                  : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
               }`}
             >
               {org.smsReady ? "Ready" : "Not Ready"}
@@ -191,50 +191,50 @@ export default function OrganizationDetailPage() {
           </div>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Twilio Configuration</h3>
+        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Twilio Configuration</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500">Subaccount SID</p>
-              <p className="text-sm font-mono text-gray-900">
+              <p className="text-sm text-gray-500 dark:text-gray-400">Subaccount SID</p>
+              <p className="text-sm font-mono text-gray-900 dark:text-white">
                 {org.twilioSubaccountSid || "Not configured"}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Marketing Messaging Service</p>
-              <p className="text-sm font-mono text-gray-900">
+              <p className="text-sm text-gray-500 dark:text-gray-400">Marketing Messaging Service</p>
+              <p className="text-sm font-mono text-gray-900 dark:text-white">
                 {org.marketingMessagingServiceSid || "Not configured"}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Transactional Messaging Service</p>
-              <p className="text-sm font-mono text-gray-900">
+              <p className="text-sm text-gray-500 dark:text-gray-400">Transactional Messaging Service</p>
+              <p className="text-sm font-mono text-gray-900 dark:text-white">
                 {org.transactionalMessagingServiceSid || "Not configured"}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">A2P Status</h3>
+        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">A2P Status</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500">Brand ID</p>
-              <p className="text-sm font-mono text-gray-900">
+              <p className="text-sm text-gray-500 dark:text-gray-400">Brand ID</p>
+              <p className="text-sm font-mono text-gray-900 dark:text-white">
                 {org.a2pBrandId || "Not registered"}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Campaign IDs</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Campaign IDs</p>
               <div className="flex flex-wrap gap-2 mt-1">
                 {org.a2pCampaignIds && org.a2pCampaignIds.length > 0 ? (
                   org.a2pCampaignIds.map((id) => (
-                    <span key={id} className="text-xs font-mono bg-gray-100 px-2 py-1 rounded">
+                    <span key={id} className="text-xs font-mono bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-2 py-1 rounded">
                       {id}
                     </span>
                   ))
                 ) : (
-                  <span className="text-sm text-gray-500">None</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">None</span>
                 )}
               </div>
             </div>
@@ -243,9 +243,9 @@ export default function OrganizationDetailPage() {
       </div>
 
       {/* Provisioning Panel */}
-      <div className="bg-white rounded-lg shadow mb-6 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6 p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">Provisioning Status</h2>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Provisioning Status</h2>
           <button
             onClick={handleTriggerProvisioning}
             disabled={triggeringProvisioning}
@@ -261,18 +261,18 @@ export default function OrganizationDetailPage() {
               <span
                 className={`px-3 py-1 inline-flex text-sm font-semibold rounded-full ${
                   provisioningJob.status === "COMPLETE"
-                    ? "bg-green-100 text-green-800"
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                     : provisioningJob.status === "FAILED"
-                    ? "bg-red-100 text-red-800"
+                    ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                     : provisioningJob.status === "RUNNING"
-                    ? "bg-blue-100 text-blue-800"
-                    : "bg-yellow-100 text-yellow-800"
+                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
                 }`}
               >
                 {provisioningJob.status}
               </span>
               {provisioningJob.errorMessage && (
-                <p className="mt-2 text-sm text-red-600">{provisioningJob.errorMessage}</p>
+                <p className="mt-2 text-sm text-red-600 dark:text-red-400">{provisioningJob.errorMessage}</p>
               )}
             </div>
             <div className="space-y-2">
@@ -281,57 +281,57 @@ export default function OrganizationDetailPage() {
                   <span
                     className={`w-24 px-2 py-1 text-xs font-semibold rounded ${
                       step.status === "COMPLETE"
-                        ? "bg-green-100 text-green-800"
+                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                         : step.status === "FAILED"
-                        ? "bg-red-100 text-red-800"
+                        ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                         : step.status === "RUNNING"
-                        ? "bg-blue-100 text-blue-800"
-                        : "bg-gray-100 text-gray-800"
+                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                        : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
                     }`}
                   >
                     {step.status}
                   </span>
-                  <span className="text-sm text-gray-900">{step.name}</span>
+                  <span className="text-sm text-gray-900 dark:text-white">{step.name}</span>
                   {step.message && (
-                    <span className="text-sm text-gray-500">- {step.message}</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">- {step.message}</span>
                   )}
                 </div>
               ))}
             </div>
-            <p className="mt-4 text-xs text-gray-500">
+            <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
               Created: {new Date(provisioningJob.createdAt).toLocaleString()}
             </p>
           </div>
         ) : (
-          <p className="text-gray-500">No provisioning job found for this organization.</p>
+          <p className="text-gray-500 dark:text-gray-400">No provisioning job found for this organization.</p>
         )}
       </div>
 
       {/* Templates for This Org */}
-      <div className="bg-white rounded-lg shadow mb-6 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Templates for This Org</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Templates for This Org</h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-900">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Template Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Type
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Override
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Effective Body Preview
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               {templates.map((template) => {
                 const hasOverride = overrides.some(
                   (o) => o.smsTemplateId === template.id && o.isActive
@@ -339,15 +339,15 @@ export default function OrganizationDetailPage() {
                 const effectiveBody = getEffectiveBody(template);
                 return (
                   <tr key={template.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                       {template.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           template.type === "MARKETING"
-                            ? "bg-purple-100 text-purple-800"
-                            : "bg-gray-100 text-gray-800"
+                            ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+                            : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
                         }`}
                       >
                         {template.type}
@@ -355,20 +355,20 @@ export default function OrganizationDetailPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {hasOverride ? (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                           Yes
                         </span>
                       ) : (
-                        <span className="text-sm text-gray-500">No</span>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">No</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                       <div className="max-w-md truncate">{effectiveBody}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <Link
                         href={`/orgs/${orgId}/templates/${template.id}`}
-                        className="text-blue-600 hover:text-blue-800"
+                        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                       >
                         Edit Override
                       </Link>
@@ -382,76 +382,76 @@ export default function OrganizationDetailPage() {
       </div>
 
       {/* Recent SMS Activity */}
-      <div className="bg-white rounded-lg shadow mb-6 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6 p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">Recent SMS Activity</h2>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Recent SMS Activity</h2>
           <Link
             href={`/logs?orgId=${orgId}`}
-            className="text-sm text-blue-600 hover:text-blue-800"
+            className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
           >
             View full logs →
           </Link>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-900">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Direction
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Phone Number
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Template
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Created
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               {recentLogs.map((log) => (
                 <tr key={log.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         log.direction === "OUTBOUND"
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-green-100 text-green-800"
+                          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                          : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                       }`}
                     >
                       {log.direction}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {log.phoneNumber}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         log.status === "DELIVERED" || log.status === "RECEIVED"
-                          ? "bg-green-100 text-green-800"
+                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                           : log.status === "FAILED"
-                          ? "bg-red-100 text-red-800"
+                          ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                           : log.status === "SENT"
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-yellow-100 text-yellow-800"
+                          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                          : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
                       }`}
                     >
                       {log.status}
                     </span>
                     {log.failureReason && (
-                      <div className="text-xs text-red-600 mt-1">{log.failureReason}</div>
+                      <div className="text-xs text-red-600 dark:text-red-400 mt-1">{log.failureReason}</div>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     {getTemplateName(log.smsTemplateId)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
                 </tr>
@@ -462,48 +462,48 @@ export default function OrganizationDetailPage() {
       </div>
 
       {/* Suppressions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Suppressions</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Suppressions</h2>
         {suppressions.length > 0 ? (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-gray-50 dark:bg-gray-900">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Phone Number
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Scope
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Reason
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Source
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Created
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {suppressions.map((sup) => (
                   <tr key={sup.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                       {sup.phoneNumber}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                         {sup.suppressionScope}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                       {sup.reason}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {sup.source}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {new Date(sup.createdAt).toLocaleString()}
                     </td>
                   </tr>
