@@ -21,6 +21,10 @@ import {
   SmsSuppression,
   ProvisioningJob,
 } from "@/types";
+import HealthScore from "@/components/HealthScore";
+import QuietHoursConfig from "@/components/QuietHoursConfig";
+import ExportButton from "@/components/ExportButton";
+import { calculateDeliveryStats } from "@/lib/utils";
 
 export default function OrganizationDetailPage() {
   const params = useParams();
@@ -118,29 +122,39 @@ export default function OrganizationDetailPage() {
     );
   }
 
+  const deliveryStats = calculateDeliveryStats(recentLogs);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-6">
-        <Link
-          href="/orgs"
-          className="text-sm text-blue-600 hover:text-blue-800 mb-2 inline-block"
-        >
-          ← Back to Organizations
-        </Link>
-        <h1 className="text-3xl font-bold text-gray-900">{org.name}</h1>
+      <div className="mb-6 flex justify-between items-start">
+        <div>
+          <Link
+            href="/orgs"
+            className="text-sm text-blue-600 hover:text-blue-800 mb-2 inline-block"
+          >
+            ← Back to Organizations
+          </Link>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{org.name}</h1>
+        </div>
+        <HealthScore
+          org={org}
+          deliveryRate={deliveryStats.deliveryRate}
+          suppressionCount={suppressions.length}
+          size="lg"
+        />
       </div>
 
       {/* Org Summary */}
-      <div className="bg-white rounded-lg shadow mb-6 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Organization Summary</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Organization Summary</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <p className="text-sm text-gray-500">Name</p>
-            <p className="text-lg font-medium text-gray-900">{org.name}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Name</p>
+            <p className="text-lg font-medium text-gray-900 dark:text-white">{org.name}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Country</p>
-            <p className="text-lg font-medium text-gray-900">{org.country}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Country</p>
+            <p className="text-lg font-medium text-gray-900 dark:text-white">{org.country}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500">SMS Enabled</p>
@@ -498,9 +512,12 @@ export default function OrganizationDetailPage() {
             </table>
           </div>
         ) : (
-          <p className="text-gray-500">No suppressions for this organization.</p>
+          <p className="text-gray-500 dark:text-gray-400">No suppressions for this organization.</p>
         )}
       </div>
+
+      {/* Quiet Hours Configuration */}
+      <QuietHoursConfig orgId={orgId} />
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { getSmsTemplateById } from "@/lib/api";
 import { SmsTemplate } from "@/types";
+import MessagePreview from "@/components/MessagePreview";
+import { getTemplateVersions, TemplateVersion } from "@/data/templateVersions";
 
 export default function TemplateEditPage() {
   const params = useParams();
@@ -12,7 +14,9 @@ export default function TemplateEditPage() {
   const templateId = params.templateId as string;
 
   const [template, setTemplate] = useState<SmsTemplate | null>(null);
+  const [versions, setVersions] = useState<TemplateVersion[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showVersions, setShowVersions] = useState(false);
   
   // Form state
   const [name, setName] = useState("");
@@ -36,6 +40,10 @@ export default function TemplateEditPage() {
         setDescription(data.description || "");
         setVariables([...data.variables]);
         setIsActive(data.isActive);
+        
+        // Load version history
+        const versionHistory = getTemplateVersions(templateId);
+        setVersions(versionHistory);
       }
       setLoading(false);
     }
@@ -282,7 +290,7 @@ export default function TemplateEditPage() {
         </div>
 
         {/* STOP Text Section */}
-        <div className="bg-gray-50 border border-gray-200 rounded-md p-4">
+        <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md p-4">
           <div className="flex items-start">
             <div className="flex-shrink-0">
               <svg className="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -290,21 +298,27 @@ export default function TemplateEditPage() {
               </svg>
             </div>
             <div className="ml-3 flex-1">
-              <p className="text-sm font-medium text-gray-900">
+              <p className="text-sm font-medium text-gray-900 dark:text-white">
                 Opt-out Text (Automatically Appended)
               </p>
-              <p className="mt-1 text-sm text-gray-600">
-                All messages will automatically include: <span className="font-mono font-semibold text-gray-900">"{stopText.trim()}"</span> at the end
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                All messages will automatically include: <span className="font-mono font-semibold text-gray-900 dark:text-white">"{stopText.trim()}"</span> at the end
               </p>
-              <p className="mt-2 text-xs text-gray-500">
+              <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
                 This text is required for compliance and will be added to every message sent using this template.
               </p>
             </div>
           </div>
         </div>
 
+        {/* Message Preview */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Live Preview</h3>
+          <MessagePreview body={fullBodyWithStop} variables={variables} />
+        </div>
+
         {/* Actions */}
-        <div className="flex space-x-4 pt-4 border-t border-gray-200">
+        <div className="flex space-x-4 pt-4 border-t border-gray-200 dark:border-gray-600">
           <button
             onClick={handleSave}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -313,12 +327,78 @@ export default function TemplateEditPage() {
           </button>
           <Link
             href="/templates"
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             Cancel
           </Link>
         </div>
       </div>
+
+      {/* Version History */}
+      {versions.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mt-6">
+          <button
+            onClick={() => setShowVersions(!showVersions)}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Version History ({versions.length} versions)
+            </h2>
+            <svg
+              className={`w-5 h-5 text-gray-500 transform transition-transform ${
+                showVersions ? "rotate-180" : ""
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {showVersions && (
+            <div className="mt-4 space-y-4">
+              {versions.map((version, index) => (
+                <div
+                  key={version.id}
+                  className={`p-4 rounded-lg border ${
+                    index === 0
+                      ? "border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20"
+                      : "border-gray-200 dark:border-gray-700"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                        Version {version.version}
+                      </span>
+                      {index === 0 && (
+                        <span className="px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-200 rounded">
+                          Current
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      {new Date(version.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded mb-2">
+                    {version.defaultBody}
+                  </p>
+                  {version.changeNote && (
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="font-medium">Note:</span> {version.changeNote}
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                    Changed by {version.changedByName}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

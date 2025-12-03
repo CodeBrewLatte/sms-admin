@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getSmsLogs, getOrganizations, getSmsTemplates } from "@/lib/api";
 import { SmsMessageLog, Organization, SmsTemplate } from "@/types";
+import ExportButton from "@/components/ExportButton";
 
 function SmsLogsContent() {
   const searchParams = useSearchParams();
@@ -72,13 +73,31 @@ function SmsLogsContent() {
     );
   }
 
+  const exportColumns = [
+    { key: "createdAt", label: "Time" },
+    { key: "orgId", label: "Org ID" },
+    { key: "direction", label: "Direction" },
+    { key: "phoneNumber", label: "Phone" },
+    { key: "status", label: "Status" },
+    { key: "body", label: "Message" },
+    { key: "smsTemplateId", label: "Template ID" },
+    { key: "failureReason", label: "Failure Reason" },
+  ];
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">SMS Message Logs</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">SMS Message Logs</h1>
+        <ExportButton
+          data={filteredLogs}
+          columns={exportColumns}
+          filename={`sms-logs-${new Date().toISOString().split("T")[0]}`}
+        />
+      </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow mb-6 p-4">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Filters</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6 p-4">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Filters</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
