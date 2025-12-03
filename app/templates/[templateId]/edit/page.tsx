@@ -53,10 +53,40 @@ export default function TemplateEditPage() {
     setVariables(variables.filter((v) => v !== variable));
   };
 
+  // STOP text constants
+  const stopText = " Reply STOP to opt out.";
+  const stopTextVariations = [
+    " Reply STOP to opt out.",
+    " Reply STOP to unsubscribe.",
+    " Reply STOP to opt out",
+    " Reply STOP to unsubscribe",
+  ];
+  
+  const getBodyWithoutStop = (body: string): string => {
+    for (const variation of stopTextVariations) {
+      if (body.endsWith(variation)) {
+        return body.slice(0, body.length - variation.length);
+      }
+    }
+    return body;
+  };
+
+  const handleBodyChange = (newBody: string) => {
+    // User edits the body without STOP text
+    setDefaultBody(newBody);
+  };
+
   const handleSave = () => {
     // Preview mode - show alert that changes won't persist
     alert("Preview Mode: Changes would be saved here, but no database is configured. This is just a preview of the edit interface.");
   };
+
+  // Compute derived values - body without STOP text for editing
+  const bodyWithoutStop = getBodyWithoutStop(defaultBody);
+  // Full body with STOP text for character counting
+  const fullBodyWithStop = bodyWithoutStop.trim() + stopText;
+  const characterCount = fullBodyWithStop.length;
+  const smsSegmentCount = Math.ceil(characterCount / 160);
 
   if (loading) {
     return (
@@ -99,30 +129,30 @@ export default function TemplateEditPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Template Name *
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 placeholder="e.g., Home Equity Change Alert"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Template Key *
               </label>
               <input
                 type="text"
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 placeholder="e.g., EQUITY_ALERT"
                 disabled
               />
-              <p className="mt-1 text-xs text-gray-500">Template key cannot be changed</p>
+              <p className="mt-1 text-xs text-gray-600">Template key cannot be changed</p>
             </div>
           </div>
         </div>
@@ -131,20 +161,20 @@ export default function TemplateEditPage() {
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Template Type *
               </label>
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value as "MARKETING" | "TRANSACTIONAL")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
               >
                 <option value="TRANSACTIONAL">Transactional</option>
                 <option value="MARKETING">Marketing</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Status
               </label>
               <div className="mt-2">
@@ -155,7 +185,7 @@ export default function TemplateEditPage() {
                     onChange={(e) => setIsActive(e.target.checked)}
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-sm text-gray-700">Template is active</span>
+                  <span className="ml-2 text-sm text-gray-900">Template is active</span>
                 </label>
               </div>
             </div>
@@ -164,21 +194,21 @@ export default function TemplateEditPage() {
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-900 mb-2">
             Description
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             placeholder="Describe what this template is used for..."
           />
         </div>
 
         {/* Variables */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-900 mb-2">
             Variables
           </label>
           <div className="flex flex-wrap gap-2 mb-3">
@@ -209,7 +239,7 @@ export default function TemplateEditPage() {
                   handleAddVariable();
                 }
               }}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
               placeholder="Add variable name (without {{ }})"
             />
             <button
@@ -220,26 +250,57 @@ export default function TemplateEditPage() {
               Add
             </button>
           </div>
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-2 text-xs text-gray-600">
             Variables can be used in the template body as {`{{variable_name}}`}
           </p>
         </div>
 
         {/* Template Body */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Template Body *
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label className="block text-sm font-medium text-gray-900">
+              Template Body *
+            </label>
+            <div className="text-sm text-gray-600">
+              <span className={`font-semibold ${characterCount > 160 ? 'text-orange-600' : characterCount > 320 ? 'text-red-600' : 'text-gray-900'}`}>
+                {characterCount}
+              </span>
+              {' '}characters
+              {' '}({smsSegmentCount} {smsSegmentCount === 1 ? 'segment' : 'segments'})
+            </div>
+          </div>
           <textarea
-            value={defaultBody}
-            onChange={(e) => setDefaultBody(e.target.value)}
+            value={bodyWithoutStop}
+            onChange={(e) => handleBodyChange(e.target.value)}
             rows={6}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 font-mono text-sm text-gray-900 bg-white"
             placeholder="Enter the template message body..."
           />
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-2 text-xs text-gray-600">
             Use variables like {`{{variable_name}}`} to insert dynamic content
           </p>
+        </div>
+
+        {/* STOP Text Section */}
+        <div className="bg-gray-50 border border-gray-200 rounded-md p-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm font-medium text-gray-900">
+                Opt-out Text (Automatically Appended)
+              </p>
+              <p className="mt-1 text-sm text-gray-600">
+                All messages will automatically include: <span className="font-mono font-semibold text-gray-900">"{stopText.trim()}"</span> at the end
+              </p>
+              <p className="mt-2 text-xs text-gray-500">
+                This text is required for compliance and will be added to every message sent using this template.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Actions */}
